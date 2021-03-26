@@ -25,7 +25,7 @@ class OrderListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super(OrderListView, self).get_queryset()
-        queryset = queryset.filter(customer=self.request.user)
+        queryset = queryset.filter(customer=self.request.user).exclude(return__isnull=False)
         return queryset
 
 
@@ -131,6 +131,9 @@ class ApproveReturn(SuperuserRequiredMixin, SuccessMessageMixin, DeleteView):
 
         product_obj.amount += order_obj.quantity
         product_obj.save()
+
+        order_obj.customer.wallet += order_obj.total_price()
+        order_obj.customer.save()
 
         response = super(ApproveReturn, self).delete(request, *args, **kwargs)
 

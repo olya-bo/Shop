@@ -3,9 +3,9 @@
 {% block content %}
     {% for return in object_list %}
         <div>
-            <p>{{ return.order.product.name }}</p>
-            <p>{{ return.order.customer }}</p>
-            <p>{{ return.created_at }}</p>
+            <p>Product: {{ return.order.product.name }}</p>
+            <p>Customer: {{ return.order.customer }}</p>
+            <p>Created at: {{ return.created_at }}</p>
             <p><a href="{% url 'return-approve' pk=return.pk %}">Approve</a></p>
             <p><a href="{% url 'return-deny' pk=return.pk %}">Deny</a></p>
         </div>

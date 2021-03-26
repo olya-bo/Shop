@@ -3,9 +3,9 @@
 {% block content %}
     {% for order in object_list %}
         <div>
-            <p>{{ order.product }}</p>
-            <p>{{ order.quantity }}</p>
-            <p>{{ order.total_price }}</p>
+            <p>Product: {{ order.product }}</p>
+            <p>Quantity:{{ order.quantity }}</p>
+            <p>Total price: {{ order.total_price }}</p>
             <p><a href="{% url 'order-return' pk=order.pk %}">Return</a></p>
         </div>
     {% endfor %}

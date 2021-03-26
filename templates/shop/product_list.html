@@ -4,9 +4,9 @@
     {% if user.is_superuser %}<a href="{% url 'product-create' %}">Create product</a>{% endif %}
     {% for product in object_list %}
         <div>
-            <p>{{ product.name }}</p>
-            <p>{{ product.price }}</p>
-            <p>{{ product.amount }}</p>
+            <p>Product: {{ product.name }}</p>
+            <p>Price: {{ product.price }}</p>
+            <p>Amount: {{ product.amount }}</p>
             {% if product.image %}
                 <img src="{{ product.image.url }}" width="200" height="100">
             {% else %}
