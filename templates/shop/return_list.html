@@ -1,0 +1,11 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+    {% for return in object_list %}
+        <div>
+            <p>{{ return.order.product.name }}</p>
+            <p>{{ return.order.customer }}</p>
+            <p>{{ return.created_at }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
