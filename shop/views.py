@@ -9,7 +9,7 @@ from shop.models import Product, Order, Return
 
 class SuperuserRequiredMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated and not request.user.is_superuser:
+        if not request.user.is_superuser:
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
@@ -48,7 +48,7 @@ class OrderCreate(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.customer = self.request.user
         form.instance.product = self.product_obj
         return super().form_valid(form)
 
@@ -75,7 +75,7 @@ class ReturnListView(SuperuserRequiredMixin, ListView):
 class ReturnCreate(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Return
     fields = []
-    success_url = reverse_lazy("return-list")
+    success_url = reverse_lazy("order-list")
     success_message = "Return created"
 
     def get_order_obj(self):
