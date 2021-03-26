@@ -40,16 +40,33 @@ class OrderCreate(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return get_object_or_404(Product, pk=self.kwargs.get("pk"))
 
     def get(self, request, *args, **kwargs):
+        self.object = None
         self.product_obj = self.get_product_obj()
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        self.object = None
         self.product_obj = self.get_product_obj()
-        return super().post(request, *args, **kwargs)
+        form = self.get_form()
+        if form.is_valid():
+
+            if self.product_obj.price * form.cleaned_data["quantity"] > request.user.wallet:
+                form.add_error(None, "Not enough money")
+
+            if form.cleaned_data["quantity"] > self.product_obj.amount:
+                form.add_error("quantity", "Not enough products")
+
+            if not form.errors:
+                return self.form_valid(form)
+        return self.form_invalid(form)
 
     def form_valid(self, form):
         form.instance.customer = self.request.user
         form.instance.product = self.product_obj
+
+        self.request.user.wallet -= self.product_obj.price * form.cleaned_data["quantity"]
+        self.request.user.save()
+
         return super().form_valid(form)
 
 
