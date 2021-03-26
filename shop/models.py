@@ -21,6 +21,9 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.customer} {self.product}"
 
+    def total_price(self):
+        return self.quantity * self.product.price
+
 
 class Return(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE)

@@ -6,13 +6,15 @@
     {% if user.is_authenticated %}
         <h2>Hello {{ user.username }}</h2>
         <p><a href="{% url 'logout' %}">Logout</a></p>
-        <p><a href="{% url 'product-list' %}">Product list</a></p>
-        <p><a href="{% url 'return-list' %}">Return products</a></p>
     {% else %}
         <p><a href="{% url 'login' %}">Login</a></p>
         <p><a href="{% url 'registration' %}">Registration</a></p>
     {% endif %}
     <hr>
-{#    <p><a href="{% url 'product-list' %}">Products</a></p>#}
-{#    <p><a href="{% url 'return-list' %}">Return products</a></p>#}
+    <p><a href="{% url 'product-list' %}">Products list</a></p>
+    {% if user.is_superuser %}
+        <p><a href="{% url 'return-list' %}">Products returns</a></p>
+    {% elif user.is_authenticated %}
+        <p><a href="{% url 'order-list' %}">Orders list</a></p>
+    {% endif %}
 {% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+    <form action="." method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+        <p>Are you sure you want return product?</p>
+        <button type="submit">Yes</button>
+    </form>
+{% endblock %}
